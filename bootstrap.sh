@@ -5,7 +5,7 @@ SOURCEDIR=$(dirname $0)
 vmdebootstrap \
     --arch armhf \
     --distribution stretch \
-    --mirror http://localhost:3142/archive.raspbian.org/raspbian \
+    --mirror http://localhost:3142/ftp.fr.debian.org/debian \
     --image `date +raspbian-%Y%m%d.img` \
     --size 2000M \
     --bootsize 64M \
@@ -16,5 +16,4 @@ vmdebootstrap \
     --no-extlinux \
     --hostname raspberry \
     --foreign /usr/bin/qemu-arm-static \
-    --debootstrapopts="keyring=$SOURCEDIR/raspbian.org.gpg" \
     --customize "$SOURCEDIR/customize.sh"

@@ -1,0 +1,3 @@
+[submodule "vmdebootstrap-raspi3"]
+	path = vmdebootstrap-raspi3
+	url = https://github.com/ProgVal/vmdebootstrap-raspi3.git

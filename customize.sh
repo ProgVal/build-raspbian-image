@@ -10,7 +10,7 @@ chmod +x $ROOTDIR/usr/sbin/policy-rc.d
 
 # Configure apt.
 export DEBIAN_FRONTEND=noninteractive
-cat $SOURCEDIR/raspbian.org.gpg | chroot $ROOTDIR apt-key add -
+#cat $SOURCEDIR/raspbian.org.gpg | chroot $ROOTDIR apt-key add -
 mkdir -p $ROOTDIR/etc/apt/sources.list.d/
 mkdir -p $ROOTDIR/etc/apt/apt.conf.d/
 echo "Acquire::http { Proxy \"http://localhost:3142\"; };" > $ROOTDIR/etc/apt/apt.conf.d/50apt-cacher-ng
