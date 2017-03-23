@@ -2,8 +2,8 @@
 set -e
 
 SOURCEDIR="$(dirname $0)"
-LINUXSOURCEDIR="$SOURCEDIR/linux-armhf/"
-KERNEL_ARCH=arm
+LINUXSOURCEDIR="$SOURCEDIR/linux/"
+KERNEL_ARCH=arm64
 ROOTDIR="$1"
 
 # Do not start services during installation.
