@@ -5,10 +5,10 @@ SOURCEDIR=$(dirname $0)
 export PYTHONPATH=$SOURCEDIR/vmdebootstrap-raspi3
 
 $SOURCEDIR/vmdebootstrap-raspi3/bin/vmdebootstrap \
-    --arch armhf \
+    --arch arm64 \
     --distribution stretch \
     --mirror http://localhost:3142/ftp.fr.debian.org/debian \
-    --image `date +raspbian32-%Y%m%d.img` \
+    --image `date +raspbian64-%Y%m%d.img` \
     --size 1000M \
     --bootsize 64M \
     --bootdirfmt=%s/boot/firmware \
@@ -18,5 +18,5 @@ $SOURCEDIR/vmdebootstrap-raspi3/bin/vmdebootstrap \
     --no-kernel \
     --no-extlinux \
     --hostname raspberry \
-    --foreign /usr/bin/qemu-arm-static \
+    --foreign /usr/bin/qemu-aarch64-static \
     --customize "$SOURCEDIR/customize.sh"

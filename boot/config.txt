@@ -2,6 +2,9 @@
 # http://www.raspberrypi.org/documentation/configuration/config-txt.md
 # Some settings may impact device functionality. See link above for details
 
+# Run in aarch64 mode (aka arm64 in Debian)
+arm_control=0x200
+
 # uncomment if you get no picture on HDMI for a default "safe" mode
 #hdmi_safe=1
 
