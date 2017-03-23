@@ -1,7 +1,6 @@
 build-raspbian-image
 ====================
-
-Builds a minimal [Raspbian](http://raspbian.org/) Stretch image.
+Builds a minimal [Debian](https://debian.org/) Stretch image for the Raspberry Pi 3.
 
 Login: `root`  
 Password: `raspberry`
@@ -12,24 +11,11 @@ Only a basic Debian with standard networking utilities.
 will allow root login with the default password.** Host keys are generated on
 first boot.
 
-Downloads
----------
-
-Latest download (Raspbian Stretch): [raspbian-20150729.img.zip](https://www.dropbox.com/s/dejepys2h9u5j55/raspbian-20150729.img.zip?dl=1) (263MB)  
-SHA1: `481a39566af76d942f7a24fc48cb9d5361e0d524`  
-SHA256: `425452d0edaae4f4e21177295bae01d1300b530d00b7278d2b7a947fb27bb1ab`  
-GPG Signature: [raspbian-20150729.img.zip.asc](/raspbian-20150729.img.zip.asc)
-
-Raspbian Jessie: [raspbian-20150214.img.zip](https://www.dropbox.com/s/hunl4libi6hdy14/raspbian-20150214.img.zip?dl=1) (214MB)  
-SHA1: `ad16b80dd8b59eb64d069dda2fdfeb01175e2c74`  
-SHA256: `3067de2bcd29536aaa72a1925febab62490fc973d982f936a3d0b82365658fa5`  
-GPG Signature: [raspbian-20150214.img.zip.asc](/raspbian-20150214.img.zip.asc)
-
 Dependencies
 ------------
 
  * `apt-get install vmdebootstrap` (at least `0.11` required)
- * `apt-get install binfmt-support qemu-user-static`
+ * `apt-get install binfmt-support qemu-user-static gcc-aarch64-linux-gnu`.
  * `apt-get install ca-certificates curl binutils git-core kmod` (required
    by the rpi-update script)
  * `apt-get install apt-cacher-ng` (or change mirror URLs in `bootstrap.sh`
@@ -38,8 +24,9 @@ Dependencies
 Usage
 -----
 
-Run `sudo ./bootstrap.sh` (root required for loopback device management)
-to create a fresh raspbian-yyyy-mm-dd.img in the current directory.
+Run `./compile_kernel.sh` (about half an hour) and `sudo ./bootstrap.sh`
+(about ten minutes; root required for loopback device management)
+to create a fresh raspbian64-yyyy-mm-dd.img in the current directory.
 
 Forbid root login
 -----------------
