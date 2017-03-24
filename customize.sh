@@ -45,39 +45,11 @@ else
     sed -i "s/.*PermitRootLogin.*/PermitRootLogin yes/" $ROOTDIR/etc/ssh/sshd_config
 fi
 
-# Install Raspbian code.
-mkdir -p $ROOTDIR/lib/modules
-chroot $ROOTDIR apt-get install -y ca-certificates curl binutils git-core kmod
-wget https://raw.github.com/Hexxeh/rpi-update/master/rpi-update -O $ROOTDIR/usr/local/sbin/rpi-update
-chmod a+x $ROOTDIR/usr/local/sbin/rpi-update
-SKIP_WARNING=1 SKIP_BACKUP=1 ROOT_PATH=$ROOTDIR BOOT_PATH=$ROOTDIR/boot/firmware $ROOTDIR/usr/local/sbin/rpi-update
-rm $ROOTDIR/boot/firmware/kernel*.img
-rm -rf $ROOTDIR/boot/firmware/overlays
-rm $ROOTDIR/boot/firmware/*.dtb*
-
-# Install Debian kernel
-#wget https://raw.githubusercontent.com/raspberrypi/tools/master/mkimage/imagetool-uncompressed.py -O imagetool-uncompressed.py
-#wget https://raw.githubusercontent.com/raspberrypi/tools/master/mkimage/args-uncompressed.txt -O args-uncompressed.txt
-#wget https://raw.githubusercontent.com/raspberrypi/tools/master/mkimage/boot-uncompressed.txt -O boot-uncompressed.txt
-#chmod a+x imagetool-uncompressed.py
-#./imagetool-uncompressed.py $ROOTDIR/boot/vmlinuz-*
-#cp kernel.img $ROOTDIR/boot/firmware/kernel.img
-#cp kernel.img $ROOTDIR/boot/firmware/kernel7.img
-#cp $ROOTDIR/boot/System.map-* $ROOTDIR/boot/firmware/
-#cp $ROOTDIR/boot/config-* $ROOTDIR/boot/firmware/
-#rm imagetool-uncompressed.py args-uncompressed.txt boot-uncompressed.txt
-
 # Install Raspbian's kernel
 $LINUXSOURCEDIR/scripts/mkknlimg $LINUXSOURCEDIR/arch/$KERNEL_ARCH/boot/Image $ROOTDIR/boot/firmware/kernel7.img
 
-# Raspi DTs for arm (32 bits)
-# cp $LINUXSOURCEDIR/arch/$KERNEL_ARCH/boot/dts/*.dtb* $ROOTDIR/boot/firmware/
-
 # Raspi DTs for arm64
 cp $LINUXSOURCEDIR/arch/$KERNEL_ARCH/boot/dts/broadcom/*.dtb* $ROOTDIR/boot/firmware/
-
-#cp $LINUXSOURCEDIR/arch/$KERNEL_ARCH/boot/dts/overlays/*.dtb* $ROOTDIR/boot/firmware/overlays/
-#cp $LINUXSOURCEDIR/arch/$KERNEL_ARCH/boot/dts/overlays/README $ROOTDIR/boot/firmware/overlays/
 
 # Install extra packages.
 #chroot $ROOTDIR apt-get install -y apt-utils vim nano whiptail netbase less iputils-ping net-tools isc-dhcp-client man-db
