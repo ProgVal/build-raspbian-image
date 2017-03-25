@@ -5,6 +5,7 @@ SOURCEDIR="$(dirname $0)"
 LINUXSOURCEDIR="$SOURCEDIR/linux/"
 KERNEL_ARCH=arm64
 ROOTDIR="$1"
+NJOBS=10
 
 # Do not start services during installation.
 echo exit 101 > $ROOTDIR/usr/sbin/policy-rc.d
@@ -38,9 +39,22 @@ sed -i "s/.*PermitRootLogin.*/PermitRootLogin yes/" $ROOTDIR/etc/ssh/sshd_config
 
 # Install Raspbian's kernel
 $LINUXSOURCEDIR/scripts/mkknlimg $LINUXSOURCEDIR/arch/$KERNEL_ARCH/boot/Image $ROOTDIR/boot/firmware/kernel7.img
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=$ROOTDIR/ modules_install  -j $NJOBS -C $LINUXSOURCEDIR
 
 # Raspi DTs for arm64
 cp $LINUXSOURCEDIR/arch/$KERNEL_ARCH/boot/dts/broadcom/*.dtb* $ROOTDIR/boot/firmware/
+
+# Add the kernel to config.txt:
+KERNEL_VERSION=$(LANG=C chroot $ROOTDIR aptitude show linux-image-arm64 | grep "^Depends:" | sed "s/Depends: linux-image-\(.*\)-arm64/\\1/")
+cat >>$ROOTDIR/boot/firmware/config.txt <<EOF
+
+# Comment the next three lines to use Raspbian's kernel instead of
+# Debian's, which has better hardware support (HDMI, WiFi, Bluetooth).
+device_tree=bcm2837-rpi-3-b.dtb
+kernel=vmlinuz-$KERNEL_VERSION-arm64
+initramfs=initrd.img-$KERNEL_VERSION-arm64
+EOF
+
 
 # Install extra packages.
 #chroot $ROOTDIR apt-get install -y apt-utils vim nano whiptail netbase less iputils-ping net-tools isc-dhcp-client man-db
