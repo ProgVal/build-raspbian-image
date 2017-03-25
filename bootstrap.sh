@@ -16,6 +16,7 @@ $SOURCEDIR/vmdebootstrap-raspi3/bin/vmdebootstrap \
     --root-password raspberry \
     --verbose \
     --package raspi3-firmware \
+    --package aptitude \
     --no-extlinux \
     --hostname raspberry \
     --foreign /usr/bin/qemu-aarch64-static \
