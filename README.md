@@ -16,14 +16,17 @@ Dependencies
 
  * `apt-get install vmdebootstrap` (at least `0.11` required)
  * `apt-get install binfmt-support qemu-user-static gcc-aarch64-linux-gnu`.
- * `apt-get install ca-certificates curl binutils git-core kmod` (required
-   by the rpi-update script)
- * `apt-get install apt-cacher-ng` (or change mirror URLs in `bootstrap.sh`
-    and `customize.sh`)
 
 Usage
 -----
 
+After you cloned the repository, run `git submodule init` to get the code
+of Raspbian's kernel and a patched version of Debootstrap (which fixed two
+blocker bugs: [845439](https://bugs.debian.org/845439) and
+[845526](https://bugs.debian.org/845526)).
+
+Then, run `./compile_kernel.sh` (about half an hour) and `./bootstrap.sh`
+(about ten minutes)
 Run `./compile_kernel.sh` (about half an hour) and `sudo ./bootstrap.sh`
 (about ten minutes; root required for loopback device management)
 to create a fresh raspbian64-yyyy-mm-dd.img in the current directory.
@@ -40,7 +43,7 @@ disable root's password.
 Writing the image to an SD card
 -------------------------------
 
-`dd if=raspbian-yyyy-mm-dd.img of=/dev/mmcblk0 bs=1M && sync`
+`dd if=raspbian64-yyyy-mm-dd.img of=/dev/mmcblk0 bs=1M && sync`
 
 Recommended packages
 --------------------
