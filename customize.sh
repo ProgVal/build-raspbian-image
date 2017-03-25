@@ -48,7 +48,7 @@ fi
 
 # Install Raspbian's kernel
 $LINUXSOURCEDIR/scripts/mkknlimg $LINUXSOURCEDIR/arch/$KERNEL_ARCH/boot/Image $ROOTDIR/boot/firmware/kernel7.img
-make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=$ROOTDIR/ modules_install  -j $NJOBS -C $LINUXSOURCEDIR
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=$ROOTDIR/ modules_install  --silent -j $NJOBS -C $LINUXSOURCEDIR
 
 # Raspi DTs for arm64
 cp $LINUXSOURCEDIR/arch/$KERNEL_ARCH/boot/dts/broadcom/*.dtb* $ROOTDIR/boot/firmware/
