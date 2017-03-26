@@ -1,0 +1,18 @@
+[Unit]
+Description=cjdns Config Generation
+ConditionPathExistsGlob=!/etc/cjdroute.conf
+Requires=rng-tools.service
+After=rng-tools.service
+PartOf=cjdns.service
+Before=cjdns.service
+
+[Install]
+WantedBy=cjdns.service
+
+[Service]
+ExecStart=/bin/bash -c " \
+          umask 0066; \
+          /usr/local/bin/cjdroute --genconf > /etc/cjdroute.conf; \
+          /usr/local/bin/update_etc_issue.sh;"
+Type=oneshot
+RemainAfterExit=yes

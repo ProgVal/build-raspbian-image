@@ -19,6 +19,7 @@ mkdir -p $ROOTDIR/etc/apt/apt.conf.d/
 echo "Acquire::http { Proxy \"http://localhost:3142\"; };" > $ROOTDIR/etc/apt/apt.conf.d/50apt-cacher-ng
 cp $SOURCEDIR/etc/apt/sources.list $ROOTDIR/etc/apt/sources.list
 cp $SOURCEDIR/etc/apt/apt.conf.d/50raspi $ROOTDIR/etc/apt/apt.conf.d/50raspi
+chroot $ROOTDIR apt-get clean
 chroot $ROOTDIR apt-get update
 
 # Regenerate SSH host keys on first boot.
@@ -68,6 +69,25 @@ EOF
 # Install extra packages.
 #chroot $ROOTDIR apt-get install -y apt-utils vim nano whiptail netbase less iputils-ping net-tools isc-dhcp-client man-db
 #chroot $ROOTDIR apt-get install -y anacron fake-hwclock
+
+# Install cjdns
+echo "Getting cjdns' dependencies and source code."
+chroot $ROOTDIR apt-get install -y nodejs git build-essential python2.7
+chroot $ROOTDIR apt-get clean
+git clone https://github.com/cjdelisle/cjdns.git $ROOTDIR/root/cjdns
+echo "Patching cjdns' minimal node version."
+sed -i 's/DEFAULT_MINVER=".*"/DEFAULT_MINVER="v4.6.1"/' $ROOTDIR/root/cjdns/node_build/node.sh
+echo "Cross-compiling cjdns."
+cd $ROOTDIR/root/cjdns; TARGET_ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- ./cross-do
+echo "Installing cjdns."
+cp $ROOTDIR/root/cjdns/cjdroute $ROOTDIR/usr/local/bin/cjdroute
+mkdir -p $ROOTDIR/etc/systemd/system
+cp $SOURCEDIR/etc/systemd/system/regen-cjdns-config.service $ROOTDIR/etc/systemd/system/regen-cjdns-config.service
+cp $SOURCEDIR/etc/systemd/system/cjdns.service $ROOTDIR/etc/systemd/system/cjdns.service
+chroot $ROOTDIR systemctl enable regen-cjdns-config
+chroot $ROOTDIR systemctl enable cjdns
+cp $SOURCEDIR/update_etc_issue.sh $ROOTDIR/usr/local/bin/update_etc_issue.sh
+chmod +x $ROOTDIR/usr/local/bin/update_etc_issue.sh
 
 # Install other recommended packages.
 #apt-get install ntp apt-cron fail2ban needrestart

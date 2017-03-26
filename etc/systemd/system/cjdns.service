@@ -1,0 +1,15 @@
+[Unit]
+Description=cjdns: routing engine designed for security, scalability, speed and ease of use
+Wants=network.target
+Requires=regen-cjdns-config.service
+After=network.target regen-cjdns-config.service
+
+[Service]
+ProtectHome=true
+ProtectSystem=true
+SyslogIdentifier=cjdroute
+ExecStart=/bin/sh -c "exec cjdroute --nobg < /etc/cjdroute.conf"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

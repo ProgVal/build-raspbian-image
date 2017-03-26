@@ -9,7 +9,7 @@ $SOURCEDIR/vmdebootstrap-raspi3/bin/vmdebootstrap \
     --distribution stretch \
     --mirror http://localhost:3142/ftp.fr.debian.org/debian \
     --image `date +raspbian64-%Y%m%d.img` \
-    --size 1200M \
+    --size 1500M \
     --bootsize 64M \
     --bootdirfmt=%s/boot/firmware \
     --boottype vfat \
