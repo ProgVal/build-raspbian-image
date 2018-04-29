@@ -6,7 +6,7 @@ export PYTHONPATH=$SOURCEDIR/vmdebootstrap-raspi3
 
 $SOURCEDIR/vmdebootstrap-raspi3/bin/vmdebootstrap \
     --arch arm64 \
-    --distribution stretch \
+    --distribution buster \
     --mirror http://localhost:3142/ftp.fr.debian.org/debian \
     --image `date +raspbian64-%Y%m%d.img` \
     --size 1200M \
