@@ -70,6 +70,14 @@ EOF
 #chroot $ROOTDIR apt-get install -y apt-utils vim nano whiptail netbase less iputils-ping net-tools isc-dhcp-client man-db
 #chroot $ROOTDIR apt-get install -y anacron fake-hwclock
 
+# Install ipfs
+echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile
+echo "export PATH=$PATH:$GOPATH/bin" >> /etc/profile
+chroot $ROOTDIR apt-get install -y golang
+chroot $ROOTDIR apt-get clean
+chroot $ROOTDIR go get -u -d github.com/ipfs/go-ipfs
+chroot $ROOTDIR make -C $GOPATH/src/github.com/ipfs/go-ipfs install
+
 # Install cjdns
 echo "Getting cjdns' dependencies and source code."
 chroot $ROOTDIR apt-get install -y nodejs git build-essential python2.7
