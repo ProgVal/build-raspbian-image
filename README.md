@@ -20,10 +20,14 @@ Dependencies
 Usage
 -----
 
-After you cloned the repository, run `git submodule init` to get the code
-of Raspbian's kernel and a patched version of Debootstrap (which fixed two
+After you cloned the repository, run `git submodule init` to get
+a patched version of Debootstrap (which fixed two
 blocker bugs: [845439](https://bugs.debian.org/845439) and
 [845526](https://bugs.debian.org/845526)).
+
+Then, run `sudo ./bootstrap.sh`
+(about ten minutes; root required for loopback device management)
+to create a fresh raspbian64-yyyy-mm-dd.img in the current directory.
 
 Forbid root login
 -----------------
@@ -33,12 +37,6 @@ to disable login with the default (`raspberry`) password.
 To disable passworded root login, add a file named `authorized_keys` in
 the `config/` folder, which will be copied to `/root/.ssh/`, and will
 disable root's password.
-
-Then, run `./compile_kernel.sh` (about half an hour) and `./bootstrap.sh`
-(about ten minutes)
-Run `./compile_kernel.sh` (about half an hour) and `sudo ./bootstrap.sh`
-(about ten minutes; root required for loopback device management)
-to create a fresh raspbian64-yyyy-mm-dd.img in the current directory.
 
 Writing the image to an SD card
 -------------------------------
